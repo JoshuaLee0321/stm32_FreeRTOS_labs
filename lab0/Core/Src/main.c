@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2024 STMicroelectronics.
+  * Copyright (c) 2022 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -18,10 +18,11 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "FreeRTOS.h"
-#include "task.h"
+
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include"FreeRTOS.h"
+#include"task.h"
 
 /* USER CODE END Includes */
 
@@ -54,7 +55,19 @@ static void MX_GPIO_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+BaseType_t xReturned;
+TaskHandle_t xHandle=NULL;
 
+void LED_Task( void ){
+	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12 | GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15, GPIO_PIN_RESET);
+	for(;;){
+
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12, GPIO_PIN_SET );
+		vTaskDelay(500);
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12, GPIO_PIN_RESET );
+		vTaskDelay(500);
+	}
+}
 /* USER CODE END 0 */
 
 /**
@@ -86,6 +99,14 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
+  xTaskCreate(
+		  LED_Task,
+		  "NAME",
+		  128,
+		  NULL,
+		  1,
+		  &xHandle);
+
   vTaskStartScheduler();
   /* USER CODE END 2 */
 
@@ -113,7 +134,6 @@ void SystemClock_Config(void)
   */
   __HAL_RCC_PWR_CLK_ENABLE();
   __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
-
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
@@ -130,7 +150,6 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
-
   /** Initializes the CPU, AHB and APB buses clocks
   */
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
@@ -340,3 +359,4 @@ void assert_failed(uint8_t *file, uint32_t line)
   /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */
+
