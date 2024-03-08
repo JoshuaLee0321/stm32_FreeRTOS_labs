@@ -211,6 +211,7 @@ void EXTI0_IRQHandler(void)
 	for(int i = 0; i < 2000; i++);
 	if (currentTask == 0) {
 		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12 | GPIO_PIN_14 , GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13, GPIO_PIN_SET);
 	} else {
 		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13, GPIO_PIN_RESET);
 	}
