@@ -67,44 +67,36 @@ void LED_S1( void ){
     HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12 | GPIO_PIN_14 , GPIO_PIN_RESET);
 
     for(;;){
-start:
         if (currentTask == 0) {
             HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12, GPIO_PIN_SET );
-            for (int i = 0; i < 200; i++) {
-            	vTaskDelay(10);
-            	if (currentTask == 1) goto start;
-            }
+            vTaskDelay(1000);
+            if (currentTask == 1) continue;
+            vTaskDelay(1000);
             HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12, GPIO_PIN_RESET );
         }
         if (currentTask == 0) {
             HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_SET );
-            for (int i = 0; i < 200; i++) {
-            	vTaskDelay(10);
-            	if (currentTask == 1) goto start;
-            }
+            vTaskDelay(1000);
+            if (currentTask == 1) continue;
+            vTaskDelay(1000);
             HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_RESET );
         }
 
     }
 }
 
-// 任务2：LED_S2
+// T2
 void LED_S2( void ){
     HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13, GPIO_PIN_RESET);
     for(;;){
-orange:
         if (currentTask == 1) {
             HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13, GPIO_PIN_SET );
-            for (int i = 0; i < 100; i++) {
-            	vTaskDelay(10);
-            	if (currentTask == 0) goto orange;
-            }
+            vTaskDelay(1000);
             HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13, GPIO_PIN_RESET );
+         	vTaskDelay(1000);
+
         }
-        for (int i = 0; i < 100; i++) {
-        	vTaskDelay(10);
-        	if (currentTask == 0) goto orange;
-        }
+
     }
 }
 /* USER CODE END 0 */
